@@ -13,3 +13,8 @@ execute 'npm install' do
     cwd "#{node['ghost_blog']['install_dir']}" 
     command 'npm install --production'
 end
+
+execute 'forever install' do
+    cwd "#{node['ghost_blog']['install_dir']}"
+    command 'npm install forever -g; NODE_ENV=production forever start index.js'
+end
