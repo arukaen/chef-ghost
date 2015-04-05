@@ -17,3 +17,19 @@
  directory '/var/www/' do
     recursive true
  end
+
+ template "/etc/nginx/sites-available/#{node['ghost_blog']['nginx']['server_name']}.conf" do
+     source 'ghost.conf.erb'
+     owner 'root'
+     group 'root'
+ end
+
+ bash 'enable site config' do
+     user 'root'
+     cwd '/etc/nginx/sites-available/'
+     code <<-EOH
+     nxdissite default
+     nxensite #{node['ghost_blog']['nginx']['server_name']}.conf
+     EOH
+     notifies :restart, 'service[nginx]', :immediately
+ end

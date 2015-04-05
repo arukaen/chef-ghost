@@ -1,0 +1,52 @@
+upstream ghost_upstream {
+    server 127.0.0.1:2368;
+    keepalive 64;
+}
+
+server {
+   listen 80;
+   server_name <%= node['ghost_blog']['nginx']['server_name'] %>;
+   add_header X-Cache $upstream_cache_status;
+   location / {
+        proxy_cache STATIC;
+        proxy_cache_valid 200 30m;
+        proxy_cache_valid 404 1m;
+        proxy_pass http://ghost_upstream;
+        proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+        proxy_ignore_headers Set-Cookie;
+        proxy_hide_header Set-Cookie;
+        proxy_hide_header X-powered-by;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        expires 10m;
+    }
+    location /content/images {
+        alias <%= node['ghost_blog']['install_dir'] %>/content/images;
+        access_log off;
+        expires max;
+    }
+    location /assets {
+        alias <%= node['ghost_blog']['install_dir'] %>/content/themes/casper/assets;
+        access_log off;
+        expires max;
+    }
+    location /public {
+        alias <%= node['ghost_blog']['install_dir'] %>/core/built/public;
+        access_log off;
+        expires max;
+    }
+    location /ghost/scripts {
+        alias <%= node['ghost_blog']['install_dir'] %>/core/built/scripts;
+        access_log off;
+        expires max;
+    }
+    location ~ ^/(?:ghost|signout) { 
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $http_host;
+        proxy_pass http://ghost_upstream;
+        add_header Cache-Control "no-cache, private, no-store,
+        must-revalidate, max-stale=0, post-check=0, pre-check=0";
+    }
+
+}
