@@ -1,16 +1,15 @@
-version = node['ghost_blog']['version']
-
 remote_file '/tmp/ghost.zip' do
-    source "https://ghost.org/zip/ghost-#{version}.zip"
+    source "https://ghost.org/zip/ghost-#{node['ghost_blog']['version']}.zip"
+    not_if { ::File.exist?('/tmp/ghost.zip') }
 end
 
 execute 'unzip' do
     cwd '/tmp'
     command "unzip ghost.zip -d #{node['ghost_blog']['install_dir']}"
-    not_if { ::File.directory?('/var/www/ghostblog') }
+    not_if { ::File.directory?("#{node['ghost_blog']['install_dir']}") }
 end
 
 execute 'npm install' do
-    cwd '/var/www/ghostblog'
+    cwd "#{node['ghost_blog']['install_dir']}" 
     command 'npm install --production'
 end
