@@ -8,7 +8,7 @@
 #
 
  include_recipe 'nodejs'
- include_recipe 'zip'
+ package 'unzip'
  include_recipe 'ghostblog::_nginx'
  include_recipe 'ghostblog::_services'
  include_recipe 'ghostblog::_ghost'
