@@ -1,5 +1,22 @@
-default['ghost_blog']['nginx']['dir'] = '/etc/nginx'
-default['ghost_blog']['nginx']['script_dir'] = '/usr/sbin'
-default['ghost_blog']['nginx']['server_name'] = 'my.ghostblog.com'
-default['ghost_blog']['install_dir'] = '/var/www/ghostblog'
-default['ghost_blog']['version'] = '0.5.10'
+# Cookbook Name:: ghostblog
+# Attributes:: default
+#
+# Copyright (C) 2014 Cris Gallardo
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+default['ghost']['nginx']['dir'] = '/etc/nginx'
+default['ghost']['nginx']['script_dir'] = '/usr/sbin'
+default['ghost']['nginx']['server_name'] = 'ghostblog.com'
+default['ghost']['install_dir'] = '/var/www/html/ghost'
+default['ghost']['version'] = 'latest'

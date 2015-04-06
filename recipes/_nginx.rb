@@ -6,19 +6,15 @@
  package 'nginx'
 
  %w{nxensite nxdissite}.each do |nxscript|
-     template "#{node['ghost_blog']['nginx']['script_dir']}/#{nxscript}" do
+     template "#{node['ghost']['nginx']['script_dir']}/#{nxscript}" do
      source "#{nxscript}.erb"
      mode '0755'
      owner 'root'
      group 'root'
    end
  end
-
- directory '/var/www/' do
-    recursive true
- end
-
- template "/etc/nginx/sites-available/#{node['ghost_blog']['nginx']['server_name']}.conf" do
+ 
+ template "/etc/nginx/sites-available/#{node['ghost']['nginx']['server_name']}.conf" do
      source 'ghost.conf.erb'
      owner 'root'
      group 'root'
@@ -29,7 +25,7 @@
      cwd '/etc/nginx/sites-available/'
      code <<-EOH
      nxdissite default
-     nxensite #{node['ghost_blog']['nginx']['server_name']}.conf
+     nxensite #{node['ghost']['nginx']['server_name']}.conf
      EOH
      notifies :restart, 'service[nginx]', :immediately
  end

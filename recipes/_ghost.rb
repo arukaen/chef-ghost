@@ -1,20 +1,32 @@
-remote_file '/tmp/ghost.zip' do
-    source "https://ghost.org/zip/ghost-#{node['ghost_blog']['version']}.zip"
-    not_if { ::File.exist?('/tmp/ghost.zip') }
-end
+ remote_file '/tmp/ghost.zip' do
+     source "https://ghost.org/zip/ghost-#{node['ghost']['version']}.zip"
+     not_if { ::File.exist?('/tmp/ghost.zip') }
+ end
+ 
+ execute 'unzip' do
+     cwd '/tmp'
+     user 'root'
+     command "unzip ghost.zip -d #{node['ghost']['install_dir']}"
+     not_if { ::File.directory?("#{node['ghost']['install_dir']}") }
+ end
 
-execute 'unzip' do
-    cwd '/tmp'
-    command "unzip ghost.zip -d #{node['ghost_blog']['install_dir']}"
-    not_if { ::File.directory?("#{node['ghost_blog']['install_dir']}") }
-end
-
-execute 'npm install' do
-    cwd "#{node['ghost_blog']['install_dir']}" 
-    command 'npm install --production'
-end
-
-execute 'forever install' do
-    cwd "#{node['ghost_blog']['install_dir']}"
-    command 'npm install forever -g; NODE_ENV=production forever start index.js'
-end
+ nodejs_npm 'packages.json' do
+     json true
+     path "#{node['ghost']['install_dir']}"
+     user 'root'
+     group 'root'
+     options ['--production']
+ end
+ 
+# execute 'npm install' do
+#     user 'root'
+#     cwd "#{node['ghost']['install_dir']}" 
+#     command 'npm install --production'
+# end
+ 
+ nodejs_npm 'forever'
+ 
+ execute 'start ghost with forever' do
+     cwd "#{node['ghost']['install_dir']}"
+     command 'NODE_ENV=production forever start index.js'
+ end

@@ -7,7 +7,7 @@ proxy_cache_path /var/run/cache levels=1:2 keys_zone=STATIC:75m inactive=24h max
 
 server {
    listen 80;
-   server_name <%= node['ghost_blog']['nginx']['server_name'] %>;
+   server_name <%= node['ghost']['nginx']['server_name'] %>;
    add_header X-Cache $upstream_cache_status;
    location / {
         proxy_cache STATIC;
@@ -24,22 +24,22 @@ server {
         expires 10m;
     }
     location /content/images {
-        alias <%= node['ghost_blog']['install_dir'] %>/content/images;
+        alias <%= node['ghost']['install_dir'] %>/content/images;
         access_log off;
         expires max;
     }
     location /assets {
-        alias <%= node['ghost_blog']['install_dir'] %>/content/themes/casper/assets;
+        alias <%= node['ghost']['install_dir'] %>/content/themes/casper/assets;
         access_log off;
         expires max;
     }
     location /public {
-        alias <%= node['ghost_blog']['install_dir'] %>/core/built/public;
+        alias <%= node['ghost']['install_dir'] %>/core/built/public;
         access_log off;
         expires max;
     }
     location /ghost/scripts {
-        alias <%= node['ghost_blog']['install_dir'] %>/core/built/scripts;
+        alias <%= node['ghost']['install_dir'] %>/core/built/scripts;
         access_log off;
         expires max;
     }
