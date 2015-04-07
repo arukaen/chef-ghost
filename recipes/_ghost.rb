@@ -18,9 +18,16 @@ nodejs_npm 'packages.json' do
     options ['--production']
 end
 
-nodejs_npm 'forever'
-
-execute 'start ghost with forever' do
-    cwd "#{node['ghost']['install_dir']}"
-    command 'NODE_ENV=production forever start index.js'
+template '/etc/init.d/ghost' do
+    source 'ghost.init.erb'
+    owner 'root'
+    group 'root'
+    mode '0755'
 end
+
+#nodejs_npm 'forever'
+#
+#execute 'start ghost with forever' do
+#    cwd "#{node['ghost']['install_dir']}"
+#    command 'NODE_ENV=production forever start index.js'
+#end
