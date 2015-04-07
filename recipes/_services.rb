@@ -1,6 +1,6 @@
  service 'nginx' do
     supports :status => true, :restart => true, :reload => true
-    action   :start
+    action   :nothing
  end
 
  service 'ghost' do
