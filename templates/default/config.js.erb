@@ -3,7 +3,7 @@ var path = require('path'),
 
 config = {
     production: {
-        url: 'http://localhost:2368',
+    url: 'http://<%= node['ghost']['nginx']['server_name']> %>:2368',
     mail: {
         transport: 'SMTP',
         options: {

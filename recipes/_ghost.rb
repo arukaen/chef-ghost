@@ -11,10 +11,9 @@ execute 'unzip' do
 end
 
 nodejs_npm 'packages.json' do
+    user 'root'
     json true
     path "#{node['ghost']['install_dir']}"
-    user 'root'
-    group 'root'
     options ['--production']
 end
 
@@ -23,6 +22,13 @@ template '/etc/init.d/ghost' do
     owner 'root'
     group 'root'
     mode '0755'
+end
+
+template "#{node['ghost']['install_dir']}/config.js" do
+    source 'config.js.erb'
+    owner 'root'
+    group 'root'
+    notifies :start, 'service[ghost]', :immediately
 end
 
 #nodejs_npm 'forever'
