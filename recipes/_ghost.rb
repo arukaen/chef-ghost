@@ -28,12 +28,21 @@ template "#{node['ghost']['install_dir']}/config.js" do
     source 'config.js.erb'
     owner 'root'
     group 'root'
+    variables(
+        :url => node['ghost']['app']['server_url'],
+        :port => node['ghost']['app']['port'],
+        :transport => node['ghost']['app']['mail_transport_method'],
+        :service => node['ghost']['app']['mail_service'],
+        :user => node['ghost']['app']['mail_user'],
+        :passwd => node['ghost']['app']['mail_passwd'],
+        :aws_access => node['ghost']['ses']['aws_access_key'],
+        :aws_secret => node['ghost']['ses']['aws_secret_key'],
+        :db_type => node['ghost']['app']['db_type'],
+        :db_host => node['ghost']['mysql']['host'],
+        :db_user => node['ghost']['mysql']['user'],
+        :db_passwd => node['ghost']['mysql']['passwd'],
+        :db_name => node['ghost']['mysql']['database'],
+        :charset => node['ghost']['mysql']['charset']
+    )
     notifies :start, 'service[ghost]', :immediately
 end
-
-#nodejs_npm 'forever'
-#
-#execute 'start ghost with forever' do
-#    cwd "#{node['ghost']['install_dir']}"
-#    command 'NODE_ENV=production forever start index.js'
-#end

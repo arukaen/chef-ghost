@@ -15,8 +15,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ghost server settings
+default['ghost']['install_dir'] = '/var/www/html/ghost'
+default['ghost']['version'] = 'latest'
+
+# Ghost Nginx settings
 default['ghost']['nginx']['dir'] = '/etc/nginx'
 default['ghost']['nginx']['script_dir'] = '/usr/sbin'
 default['ghost']['nginx']['server_name'] = 'ghostblog.com'
-default['ghost']['install_dir'] = '/var/www/html/ghost'
-default['ghost']['version'] = 'latest'
+
+# Ghost app settings
+default['ghost']['app']['server_url'] = 'localhost'
+default['ghost']['app']['port'] = '2368'
+default['ghost']['app']['mail_transport_method'] = 'SMTP'
+default['ghost']['app']['mail_service'] = nil
+default['ghost']['app']['mail_user'] = nil 
+default['ghost']['app']['mail_passwd'] = nil 
+default['ghost']['ses']['aws_secret_key'] = nil
+default['ghost']['ses']['aws_access_key'] = nil
+default['ghost']['app']['db_type'] = 'sqlite3'
+
+# Ghost MySQL settings
+default['ghost']['mysql']['host'] = '127.0.0.1'
+default['ghost']['mysql']['user'] = 'ghost_blog'
+default['ghost']['mysql']['passwd'] = 'ChangePasswordQuick!'
+default['ghost']['mysql']['database'] = 'ghost_db'
+default['ghost']['mysql']['charset'] = 'utf8'
