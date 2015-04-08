@@ -1,19 +1,19 @@
 remote_file '/tmp/ghost.zip' do
-    source "https://ghost.org/zip/ghost-#{node['ghost']['version']}.zip"
+    source "https://ghost.org/zip/ghost-#{node['ghost-blog']['version']}.zip"
     not_if { ::File.exist?('/tmp/ghost.zip') }
 end
 
 execute 'unzip' do
     cwd '/tmp'
     user 'root'
-    command "unzip ghost.zip -d #{node['ghost']['install_dir']}"
-    not_if { ::File.directory?("#{node['ghost']['install_dir']}") }
+    command "unzip ghost.zip -d #{node['ghost-blog']['install_dir']}"
+    not_if { ::File.directory?("#{node['ghost-blog']['install_dir']}") }
 end
 
 nodejs_npm 'packages.json' do
     user 'root'
     json true
-    path "#{node['ghost']['install_dir']}"
+    path "#{node['ghost-blog']['install_dir']}"
     options ['--production']
 end
 
@@ -24,25 +24,25 @@ template '/etc/init.d/ghost' do
     mode '0755'
 end
 
-template "#{node['ghost']['install_dir']}/config.js" do
+template "#{node['ghost-blog']['install_dir']}/config.js" do
     source 'config.js.erb'
     owner 'root'
     group 'root'
     variables(
-        :url => node['ghost']['app']['server_url'],
-        :port => node['ghost']['app']['port'],
-        :transport => node['ghost']['app']['mail_transport_method'],
-        :service => node['ghost']['app']['mail_service'],
-        :user => node['ghost']['app']['mail_user'],
-        :passwd => node['ghost']['app']['mail_passwd'],
-        :aws_access => node['ghost']['ses']['aws_access_key'],
-        :aws_secret => node['ghost']['ses']['aws_secret_key'],
-        :db_type => node['ghost']['app']['db_type'],
-        :db_host => node['ghost']['mysql']['host'],
-        :db_user => node['ghost']['mysql']['user'],
-        :db_passwd => node['ghost']['mysql']['passwd'],
-        :db_name => node['ghost']['mysql']['database'],
-        :charset => node['ghost']['mysql']['charset']
+        :url => node['ghost-blog']['app']['server_url'],
+        :port => node['ghost-blog']['app']['port'],
+        :transport => node['ghost-blog']['app']['mail_transport_method'],
+        :service => node['ghost-blog']['app']['mail_service'],
+        :user => node['ghost-blog']['app']['mail_user'],
+        :passwd => node['ghost-blog']['app']['mail_passwd'],
+        :aws_access => node['ghost-blog']['ses']['aws_access_key'],
+        :aws_secret => node['ghost-blog']['ses']['aws_secret_key'],
+        :db_type => node['ghost-blog']['app']['db_type'],
+        :db_host => node['ghost-blog']['mysql']['host'],
+        :db_user => node['ghost-blog']['mysql']['user'],
+        :db_passwd => node['ghost-blog']['mysql']['passwd'],
+        :db_name => node['ghost-blog']['mysql']['database'],
+        :charset => node['ghost-blog']['mysql']['charset']
     )
     notifies :start, 'service[ghost]', :immediately
 end

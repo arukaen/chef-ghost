@@ -6,11 +6,11 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: ubuntu-12.04
-    driver_config:
-      network:
-      - ["forwarded_port", {guest: 80, host: 8080}]
-      - ["private_network", {ip: 192.168.150.4}]
+#  - name: ubuntu-12.04
+#    driver_config:
+#      network:
+#      - ["forwarded_port", {guest: 80, host: 8080}]
+#      - ["private_network", {ip: 192.168.150.4}]
   
   - name: ubuntu-14.04
     driver_config:
@@ -21,5 +21,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[ghostblog::default]
+      - recipe[ghost-blog::default]
     attributes:

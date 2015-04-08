@@ -1,4 +1,4 @@
-# Cookbook Name:: ghostblog
+# Cookbook Name:: ghost-blog
 # Attributes:: default
 #
 # Copyright (C) 2014 Cris Gallardo
@@ -16,28 +16,28 @@
 # limitations under the License.
 
 # Ghost server settings
-default['ghost']['install_dir'] = '/var/www/html/ghost'
-default['ghost']['version'] = 'latest'
+default['ghost-blog']['install_dir'] = '/var/www/html/ghost'
+default['ghost-blog']['version'] = 'latest'
 
 # Ghost Nginx settings
-default['ghost']['nginx']['dir'] = '/etc/nginx'
-default['ghost']['nginx']['script_dir'] = '/usr/sbin'
-default['ghost']['nginx']['server_name'] = 'ghostblog.com'
+default['ghost-blog']['nginx']['dir'] = '/etc/nginx'
+default['ghost-blog']['nginx']['script_dir'] = '/usr/sbin'
+default['ghost-blog']['nginx']['server_name'] = 'ghostblog.com'
 
 # Ghost app settings
-default['ghost']['app']['server_url'] = 'localhost'
-default['ghost']['app']['port'] = '2368'
-default['ghost']['app']['mail_transport_method'] = 'SMTP'
-default['ghost']['app']['mail_service'] = nil
-default['ghost']['app']['mail_user'] = nil 
-default['ghost']['app']['mail_passwd'] = nil 
-default['ghost']['ses']['aws_secret_key'] = nil
-default['ghost']['ses']['aws_access_key'] = nil
-default['ghost']['app']['db_type'] = 'sqlite3'
+default['ghost-blog']['app']['server_url'] = 'localhost'
+default['ghost-blog']['app']['port'] = '2368'
+default['ghost-blog']['app']['mail_transport_method'] = 'SMTP'
+default['ghost-blog']['app']['mail_service'] = nil
+default['ghost-blog']['app']['mail_user'] = nil
+default['ghost-blog']['app']['mail_passwd'] = nil
+default['ghost-blog']['ses']['aws_secret_key'] = nil
+default['ghost-blog']['ses']['aws_access_key'] = nil
+default['ghost-blog']['app']['db_type'] = 'sqlite3'
 
 # Ghost MySQL settings
-default['ghost']['mysql']['host'] = '127.0.0.1'
-default['ghost']['mysql']['user'] = 'ghost_blog'
-default['ghost']['mysql']['passwd'] = 'ChangePasswordQuick!'
-default['ghost']['mysql']['database'] = 'ghost_db'
-default['ghost']['mysql']['charset'] = 'utf8'
+default['ghost-blog']['mysql']['host'] = '127.0.0.1'
+default['ghost-blog']['mysql']['user'] = 'ghost_blog'
+default['ghost-blog']['mysql']['passwd'] = 'ChangePasswordQuick!'
+default['ghost-blog']['mysql']['database'] = 'ghost_db'
+default['ghost-blog']['mysql']['charset'] = 'utf8'
