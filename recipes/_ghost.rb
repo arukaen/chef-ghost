@@ -1,19 +1,19 @@
-remote_file '/tmp/ghost.zip' do
+remote_file "#{Chef::Config[:file_cache_path]}/ghost.zip" do
     source "https://ghost.org/zip/ghost-#{node['ghost-blog']['version']}.zip"
-    not_if { ::File.exist?('/tmp/ghost.zip') }
+    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/ghost.zip") }
 end
 
 execute 'unzip' do
     cwd '/tmp'
     user 'root'
-    command "unzip ghost.zip -d #{node['ghost-blog']['install_dir']}"
-    not_if { ::File.directory?("#{node['ghost-blog']['install_dir']}") }
+    command "unzip #{Chef::Config[:file_cache_path]}/ghost.zip -d #{node['ghost-blog']['install_dir']}"
+    not_if { ::File.directory?(node['ghost-blog']['install_dir']) }
 end
 
 nodejs_npm 'packages.json' do
     user 'root'
     json true
-    path "#{node['ghost-blog']['install_dir']}"
+    path node['ghost-blog']['install_dir']
     options ['--production']
 end
 
