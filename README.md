@@ -63,7 +63,7 @@ Ghost MySQL settings
 ## Note about MySQL option
 
 Creating a local MySQL server/database is outside the scope of this cookbook. I am assuming if you are using the `mysql` option for `node['ghost']['app']['db_type']` that
-you already have a MySQL elsewhere such as AWS RDS or on another server. 
+you already have a MySQL elsewhere such as AWS RDS or on another server. You could always wrap this cookbook and create your own MySQL instance. 
 
 * `node['ghost']['mysql']['host']` - MySQL host. Default is `127.0.0.1`
 * `node['ghost']['mysql']['user']` - MySQL user. Default is `ghost_blog`
