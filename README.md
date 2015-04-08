@@ -49,9 +49,22 @@ Ghost app settings
 * `node['ghost']['app']['mail_service']` - Name of Mail service to use with nodemailer. Default is `nil`. Supports `Gmail`,`SES`, & `mailgun`.
 * `node['ghost']['app']['mail_user']` - Username for select mail service. Default is `nil`
 * `node['ghost']['app']['mail_passwd']` - Password for selected mail user. Default is `nil`
+* `node['ghost']['app']['db_type']` - Type of database to use with Ghost. Default is `sqlite3`. Supports `sqlite3`, and `mysql`.
+
+Ghost AWS SES settings
+----------------
+
 * `node['ghost']['ses']['aws_secret_key']` - AWS Secret key. Default is `nil`
 * `node['ghost']['ses']['aws_access_key']` - AWS Access key. Default is `nil`
-* `node['ghost']['app']['db_type']` - Type of database to use with Ghost. Default is `sqlite3`. Supports `sqlite3`, and `mysql`.
+
+Ghost MySQL settings
+----------------
+
+## Note about MySQL option
+
+Creating a local MySQL server/database is outside the scope of this cookbook. I am assuming if you are using the `mysql` option for `node['ghost']['app']['db_type']` that
+you already have a MySQL elsewhere such as AWS RDS or on another server. 
+
 * `node['ghost']['mysql']['host']` - MySQL host. Default is `127.0.0.1`
 * `node['ghost']['mysql']['user']` - MySQL user. Default is `ghost_blog`
 * `node['ghost']['mysql']['passwd']` - MySQL password. Default is `ChangePasswordQuick!`
