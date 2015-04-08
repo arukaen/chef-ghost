@@ -1,6 +1,10 @@
 ghostblog CHANGELOG
 ===================
 
+v1.0.3
+------
+- Made some suggestions based on foodcritic.
+
 v1.0.2
 ------
 - There was already a `ghost` cookbook on the Supermarket, so I had to change the name of mine to `ghost-blog`. Because of this the cookbook broke. Renamed all mention of "ghost" to "ghost-blog". This should fix the cookbook now.
