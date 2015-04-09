@@ -1,6 +1,6 @@
  apt_repository 'nginx' do
    uri          'ppa:nginx/stable'
-   distribution 'precise'
+   distribution node['lsb']['codename']
  end
 
  package 'nginx'
