@@ -4,7 +4,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/ghost.zip" do
 end
 
 execute 'unzip' do
-    cwd '/tmp'
     user 'root'
     command "unzip #{Chef::Config[:file_cache_path]}/ghost.zip -d #{node['ghost-blog']['install_dir']}"
     not_if { ::File.directory?(node['ghost-blog']['install_dir']) }
