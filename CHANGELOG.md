@@ -1,5 +1,8 @@
 ghostblog CHANGELOG
 ===================
+v1.0.4
+------
+- Made a change on ghost recipe to change distribution from a hardcode to node attribute
 
 v1.0.3
 ------
