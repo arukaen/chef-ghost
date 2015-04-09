@@ -6,16 +6,21 @@ provisioner:
   name: chef_solo
 
 platforms:
-#  - name: ubuntu-12.04
-#    driver_config:
-#      network:
-#      - ["private_network", {ip: 192.168.150.4}]
-  
+  - name: ubuntu-12.04
+    driver_config:
+      network:
+      - ["private_network", {ip: 192.168.150.4}]
+      customize:
+        cpus: 2
+        memory: 4096
+
   - name: ubuntu-14.04
     driver_config:
       network:
       - ["private_network", {ip: 192.168.150.4}]
-
+      customize:
+        cpus: 2
+        memory: 4096
 suites:
   - name: default
     run_list:

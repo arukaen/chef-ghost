@@ -87,3 +87,8 @@ Usage
 
 Using this cookbook is relatively straightforward. Add the default
 recipe to the run list of a node, or create a role.
+
+Authors
+=====
+
+* Author:: Cris Gallardo (c@cristhekid.com)
