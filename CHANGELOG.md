@@ -1,5 +1,9 @@
 ghostblog CHANGELOG
 ===================
+v1.0.5
+------
+- Errors in config.js fixed.
+
 v1.0.4
 ------
 - Made a change on ghost recipe to change distribution from a hardcode to node attribute
