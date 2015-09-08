@@ -1,5 +1,9 @@
 ghostblog CHANGELOG
 ===================
+Unreleased
+----------
+- Add SSL support (on by default).
+
 v1.0.5
 ------
 - Errors in config.js fixed.

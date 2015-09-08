@@ -21,8 +21,24 @@ default['ghost-blog']['version'] = 'latest'
 
 # Ghost Nginx settings
 default['ghost-blog']['nginx']['dir'] = '/etc/nginx'
+default['ghost-blog']['nginx']['log_dir'] = '/var/log/nginx'
 default['ghost-blog']['nginx']['script_dir'] = '/usr/sbin'
 default['ghost-blog']['nginx']['server_name'] = 'ghostblog.com'
+default['ghost-blog']['nginx']['http_port'] = 80
+default['ghost-blog']['nginx']['https_port'] = 443
+# Valid values: false, true, :both (doesn't redirect). Use both if you can't get
+# a certificate (startssl.com has free ones) and you want to get rid of the
+# warning for the self-signed cert.
+default['ghost-blog']['nginx']['ssl'] = true
+# We don't actually *set* this default: we calculate their values in the _nginx
+# recipe if you don't set them, so you can change server_name and affect these.
+# Generally, either ignore these or dump your certificate at
+# /etc/nginx/ssl/yourserver.com.crt and your key at yourserver.com.key, and you
+# are good.
+# default['ghost-blog']['nginx']['ssl_certificate'] = ...
+# default['ghost-blog']['nginx']['ssl_certificate_key'] = ...
+# Once again, the subj is auto-generated in the _nginx recipe so the hostname is right
+# default['ghost-blog']['app']['self_signed_ssl_certificate_subj'] = ...
 
 # Ghost app settings
 default['ghost-blog']['app']['server_url'] = 'localhost'
