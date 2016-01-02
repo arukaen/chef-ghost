@@ -1,3 +1,4 @@
+# TODO upgrade to latest ghost when there is a new one!
 remote_file "#{Chef::Config[:file_cache_path]}/ghost.zip" do
     source "https://ghost.org/zip/ghost-#{node['ghost-blog']['version']}.zip"
     not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/ghost.zip") }
@@ -14,6 +15,9 @@ nodejs_npm 'packages.json' do
     json true
     path node['ghost-blog']['install_dir']
     options ['--production']
+# TODO nodejs_npm seems like it's not really test-and-set. Fix that so we can
+# auto-restart ghost when the installation changes.
+#    notifies :restart, 'service[ghost]'
 end
 
 template '/etc/init.d/ghost' do
@@ -21,6 +25,7 @@ template '/etc/init.d/ghost' do
     owner 'root'
     group 'root'
     mode '0755'
+    notifies :restart, 'service[ghost]'
 end
 
 template "#{node['ghost-blog']['install_dir']}/config.js" do
@@ -43,5 +48,5 @@ template "#{node['ghost-blog']['install_dir']}/config.js" do
         :db_name => node['ghost-blog']['mysql']['database'],
         :charset => node['ghost-blog']['mysql']['charset']
     )
-    notifies :start, 'service[ghost]', :immediately
+    notifies :restart, 'service[ghost]'
 end

@@ -42,6 +42,17 @@ Nginx settings
 * `node['ghost-blog']['nginx']['dir']` - Nginx directory. Default is `/etc/nginx`
 * `node['ghost-blog']['nginx']['script_dir']` - bin directory for scripts. Default is `/usr/bin`
 * `node['ghost-blog']['nginx']['server_name']` - Nginx server name. Default is `ghostblog.com`
+* `node['ghost-blog']['nginx']['ssl']` - `false` to disable SSL, `true` to enable (and redirect
+  http://yourblog.com to https://yourblog.com), and `:both` to enable both `http` and `https`
+  side-by-side without redirect. Default is `true`.
+* `node['ghost-blog']['nginx']['ssl_certificate']` - The certificate file to use. Self-signed
+  certificate will be generated if it does not exist. Default is `/etc/nginx/ssl/yourblog.com.crt`
+* `node['ghost-blog']['nginx']['ssl_certificate_key']` - The key used to sign the
+  certificate. Will be generated if it does not exist. Default is `/etc/nginx/ssl/yourblog.com.key`.
+* node['ghost-blog']['nginx']['self_signed_ssl_certificate_subj']` - If a self-signed certificate
+  is generated (which happens if you do not supply a certificate by placing the certificate in the
+  specified location), this is the information that will be used to fill it out. Default is
+  `/C=US/ST=Washington/L=Seattle/O=John Doe/OU=John Doe Industries/CN=*.yourblog.com/CN=yourblog.com`
 
 Ghost app settings
 ----------------
@@ -66,7 +77,7 @@ Ghost MySQL settings
 ## Note about MySQL option
 
 Creating a local MySQL server/database is outside the scope of this cookbook. I am assuming if you are using the `mysql` option for `node['ghost-blog']['app']['db_type']` that
-you already have a MySQL elsewhere such as AWS RDS or on another server. You could always wrap this cookbook and create your own MySQL instance. 
+you already have a MySQL elsewhere such as AWS RDS or on another server. You could always wrap this cookbook and create your own MySQL instance.
 
 * `node['ghost-blog']['mysql']['host']` - MySQL host. Default is `127.0.0.1`
 * `node['ghost-blog']['mysql']['user']` - MySQL user. Default is `ghost_blog`
