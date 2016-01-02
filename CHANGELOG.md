@@ -1,6 +1,7 @@
 ghostblog CHANGELOG
 ===================
-Unreleased
+
+v1.0.6
 ----------
 - Add SSL support (on by default).
 
