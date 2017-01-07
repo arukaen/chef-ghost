@@ -3,7 +3,7 @@ var path = require('path'),
 
 config = {
     production: {
-    url: 'http://<%= @url %>:<%= @port %>',
+    url: '<%= @url %>',
         <% if @service == 'mailgun' || @service == 'Gmail' %>
     mail: {
         transport: '<%= @transport %>',

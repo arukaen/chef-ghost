@@ -34,7 +34,6 @@ template "#{node['ghost-blog']['install_dir']}/config.js" do
     group 'root'
     variables(
         :url => node['ghost-blog']['app']['server_url'],
-        :port => node['ghost-blog']['app']['port'],
         :transport => node['ghost-blog']['app']['mail_transport_method'],
         :service => node['ghost-blog']['app']['mail_service'],
         :user => node['ghost-blog']['app']['mail_user'],
