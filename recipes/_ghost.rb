@@ -39,6 +39,7 @@ template "#{node['ghost-blog']['install_dir']}/config.js" do
     variables(
         :url => node['ghost-blog']['app']['server_url'],
         :port => node['ghost-blog']['app']['port'],
+        :listen_address => node['ghost-blog']['app']['listen_address'],
         :transport => node['ghost-blog']['app']['mail_transport_method'],
         :service => node['ghost-blog']['app']['mail_service'],
         :user => node['ghost-blog']['app']['mail_user'],

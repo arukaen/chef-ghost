@@ -52,7 +52,7 @@ database: {
 },
 <% end %>
         server: {
-            host: '127.0.0.1',
+            host: '<%= @listen_address %>',
             port: '<%= @port %>'
         }
     }
