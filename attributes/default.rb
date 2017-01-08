@@ -42,6 +42,7 @@ default['ghost-blog']['nginx']['ssl'] = true
 
 # Ghost app settings
 default['ghost-blog']['app']['server_url'] = 'http://localhost:2368'
+default['ghost-blog']['app']['port'] = '2368'
 default['ghost-blog']['app']['mail_transport_method'] = 'SMTP'
 default['ghost-blog']['app']['mail_service'] = nil
 default['ghost-blog']['app']['mail_user'] = nil
