@@ -18,7 +18,7 @@ NAME=ghost
 GHOST_ROOT=<%= node['ghost-blog']['install_dir'] %>
 GHOST_GROUP=root
 GHOST_USER=root
-DAEMON=/usr/bin/node
+DAEMON=<%= node['ghost-blog']['node_bin_path'] %>
 DAEMON_ARGS="$GHOST_ROOT/index.js"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
