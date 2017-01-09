@@ -21,6 +21,7 @@ default['nodejs']['repo'] = 'https://deb.nodesource.com/node_6.x'
 # Ghost server settings
 default['ghost-blog']['install_dir'] = '/var/www/html/ghost'
 default['ghost-blog']['version'] = 'latest'
+default['ghost-blog']['node_bin_path'] = '/usr/bin/node'
 
 # Ghost Nginx settings
 default['ghost-blog']['nginx']['dir'] = '/etc/nginx'
