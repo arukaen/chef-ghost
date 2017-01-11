@@ -15,6 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# node settings
+default['nodejs']['repo'] = 'https://deb.nodesource.com/node_6.x'
+
 # Ghost server settings
 default['ghost-blog']['install_dir'] = '/var/www/html/ghost'
 default['ghost-blog']['version'] = 'latest'
