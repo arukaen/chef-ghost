@@ -1,11 +1,8 @@
-# require 'helpers'
-
 class Chef
   class Resource
     class GhostBlogSite < ChefCompat::Resource
       resource_name :ghost_blog
 
-      # actions :create, :delete
       default_action :create
       
       property :install_dir, String, required: true
@@ -25,20 +22,6 @@ class Chef
       property :mysql_passwd, String, required: false
       property :mysql_name, String, required: false
       property :mysql_charset, String, required: false
-
-      
-=begin
-      property :cookbook, String, default: 'cron', desired_state: false
-      property :command, String, required: true
-      property :user, String, default: 'root'
-      property :mailto, [String, nil]
-      property :path, [String, nil]
-      property :home, [String, nil]
-      property :shell, [String, nil]
-      property :comment, [String, nil]
-      property :environment, Hash, default: {}
-      property :mode, [String, Integer], default: '0644'
-=end
 
       default_action :create
 
