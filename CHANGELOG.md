@@ -1,6 +1,10 @@
 ghostblog CHANGELOG
 ===================
 
+v1.0.7
+------
+- Update repo url for node6.x versions.
+
 v1.0.6
 ----------
 - Add SSL support (on by default).
