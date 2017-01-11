@@ -14,11 +14,11 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Ghost"
-NAME=ghost
-GHOST_ROOT=<%= node['ghost-blog']['install_dir'] %>
+NAME=ghost_<%= @name %>
+GHOST_ROOT=<%= @install_dir %>
 GHOST_GROUP=root
 GHOST_USER=root
-DAEMON=<%= node['ghost-blog']['node_bin_path'] %>
+DAEMON=<%= @node_bin_path %>
 DAEMON_ARGS="$GHOST_ROOT/index.js"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME

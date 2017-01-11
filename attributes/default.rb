@@ -46,7 +46,6 @@ default['ghost-blog']['nginx']['ssl'] = true
 
 # Ghost app settings
 default['ghost-blog']['app']['server_url'] = 'http://localhost:2368'
-default['ghost-blog']['app']['listen_address'] = '127.0.0.1'
 default['ghost-blog']['app']['port'] = '2368'
 default['ghost-blog']['app']['mail_transport_method'] = 'SMTP'
 default['ghost-blog']['app']['mail_service'] = nil
@@ -54,7 +53,6 @@ default['ghost-blog']['app']['mail_user'] = nil
 default['ghost-blog']['app']['mail_passwd'] = nil
 default['ghost-blog']['ses']['aws_secret_key'] = nil
 default['ghost-blog']['ses']['aws_access_key'] = nil
-default['ghost-blog']['app']['db_type'] = 'sqlite3'
 
 # Ghost MySQL settings
 default['ghost-blog']['mysql']['host'] = '127.0.0.1'
