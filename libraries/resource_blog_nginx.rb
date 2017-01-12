@@ -1,120 +1,83 @@
+require 'shellwords'
+
 class Chef
   class Resource
-    class GhostBlogSite < ChefCompat::Resource
-      resource_name :ghost_blog
+    class GhostBlogNginxConfig < ChefCompat::Resource
+      resource_name :ghost_nginx
 
       default_action :create
-      
-      property :install_dir, String, required: true
-      property :blog_url, String, required: true
-      property :port, Integer, required: true
-      property :node_bin_path, String, required: true, default: '/usr/bin/node'
-      property :listen_address, String, required: true, default: '127.0.0.1'
-      property :email_transport, String, required: false
-      property :email_service, String, required: false
-      property :email_user, String, required: false
-      property :email_passwd, String, required: false
-      property :aws_access_key, String, required: false
-      property :aws_secret_key, String, required: false
-      property :db_type, String, required: true, default: 'sqlite3'
-      property :mysql_host, String, required: false
-      property :mysql_user, String, required: false
-      property :mysql_passwd, String, required: false
-      property :mysql_name, String, required: false
-      property :mysql_charset, String, required: false
+
+      property :blog_name, String, required: true
+      property :blog_domain, String, required: true
+      property :proxy_port, Integer, required: true
 
       default_action :create
 
       action :create do
-        # TODO upgrade to latest ghost when there is a new one!
-        remote_file "#{Chef::Config[:file_cache_path]}/ghost.zip" do
-          source "https://ghost.org/zip/ghost-#{node['ghost-blog']['version']}.zip"
-          not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/ghost.zip") }
+        nginx_attrs = node['ghost-blog']['nginx'].to_h
+        nginx_attrs['ssl_certificate'] ||= "#{nginx_attrs['dir']}/ssl/#{blog_name}.crt"
+        nginx_attrs['ssl_certificate_key'] ||= "#{nginx_attrs['dir']}/ssl/#{blog_name}.key"
+        nginx_attrs['self_signed_ssl_certificate_subj'] ||= "/C=US/ST=Washington/L=Seattle/O=John Doe/OU=John Doe Industries/CN=*.#{blog_domain}/CN=#{blog_domain}"
+
+        # Bring in the latest stable nginx from apt (will not upgrade, though)
+        apt_repository 'nginx' do
+          uri          'ppa:nginx/stable'
+          distribution node['lsb']['codename']
         end
 
-        directory install_dir do
-          recursive true
+        package 'nginx'
+
+        # Utilities to enable and disable nginx sites
+        %w{nxensite nxdissite}.each do |nxscript|
+          template "#{nginx_attrs['script_dir']}/#{nxscript}" do
+            source "#{nxscript}.erb"
+            mode '0755'
+            owner 'root'
+            group 'root'
+          end
         end
 
-        execute 'unzip' do
-          user 'root'
-          command "unzip #{Chef::Config[:file_cache_path]}/ghost.zip -d #{install_dir}"
-          not_if { ::File.exists?("#{install_dir}/index.js") }
+        # Self-signed certificate (if needed)
+        execute "generate self-signed cert #{nginx_attrs['self_signed']}" do
+          command "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout #{nginx_attrs['ssl_certificate_key'].to_s.shellescape} -out #{nginx_attrs['ssl_certificate'].to_s.shellescape} -subj #{nginx_attrs['self_signed_ssl_certificate_subj'].to_s.shellescape}"
+          # TODO regen or extend if expired
+          only_if do
+            # We don't overwrite keys and certificates. Not our jam, yo.
+            if nginx_attrs['ssl'] &&
+              !::File.exist?(nginx_attrs['ssl_certificate']) &&
+              !::File.exist?(nginx_attrs['ssl_certificate_key'])
+            end
+          end
+          notifies :restart, 'service[nginx]'
         end
 
-        nodejs_npm 'packages.json' do
-          user 'root'
-          json true
-          path install_dir
-          options ['--production']
-        # TODO nodejs_npm seems like it's not really test-and-set. Fix that so we can
-        # auto-restart ghost when the installation changes.
-        #    notifies :restart, 'service[ghost]'
-        end
-
-        template "/etc/init.d/ghost_#{sanitized_name}" do
-          source 'ghost.init.erb'
+        # Create the server definition
+        template "/etc/nginx/sites-available/#{blog_name}.conf" do
+          source 'ghost.conf.erb'
+          blog_domain blog_domain
+          blog_name blog_name
+          proxy_port proxy_port
+          variables nginx_attrs
           owner 'root'
           group 'root'
-          mode '0755'
-          variables(
-            :name => sanitized_name,
-            :install_dir => install_dir,
-            :node_bin_path => node_bin_path
-          )
-
-          notifies :restart, "service[ghost_#{sanitized_name}]"
         end
 
-        template "#{install_dir}/config.js" do
-          source 'config.js.erb'
-          owner 'root'
-          group 'root'
-          variables(
-            :url => blog_url,
-            :port => port,
-            :listen_address => listen_address,
-            :transport => email_transport,
-            :service => email_service,
-            :user => email_user,
-            :passwd => email_passwd,
-            :aws_access => aws_access_key,
-            :aws_secret => aws_secret_key,
-            :db_type => db_type,
-            :db_host => mysql_host,
-            :db_user => mysql_user,
-            :db_passwd => mysql_passwd,
-            :db_name => mysql_name,
-            :charset => mysql_charset
-          )
-          notifies :restart, "service[ghost_#{sanitized_name}]"
+        # Enable the site
+        bash 'enable site config' do
+          user 'root'
+          cwd '/etc/nginx/sites-available/'
+          code <<-EOH
+             nxdissite default
+             nxensite #{blog_name}.conf
+          EOH
         end
 
-        service "ghost_#{sanitized_name}" do
-           supports :status => true, :restart => true, :reload => true, :start => true, :stop => true
-           action   :nothing
-        end
 
       end
 
       action :delete do
 
-        service "ghost_#{sanitized_name}" do
-          action   :delete
-        end
 
-        template "#{node['ghost-blog']['install_dir']}/config.js" do
-          action :delete
-        end
-
-        template "/etc/init.d/ghost_#{sanitized_name}" do
-          action :delete
-        end
-
-        directory install_dir do
-          recursive true
-          action :delete
-        end
       end
 
       @action_class.class_eval do
