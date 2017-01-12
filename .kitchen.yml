@@ -3,34 +3,37 @@ driver:
   name: vagrant
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
+
+verifier:
+  name: inspec
 
 platforms:
-  - name: ubuntu-12.04
-    driver_config:
-      network:
-      - ["private_network", {ip: 192.168.150.4}]
-      customize:
-        cpus: 4
-        memory: 4096
+#  - name: ubuntu-12.04
+#    run_list: apt::default
 
   - name: ubuntu-14.04
-    driver_config:
-      network:
-      - ["private_network", {ip: 192.168.150.5}]
-      customize:
-        cpus: 4
-        memory: 4096
+    run_list: apt::default
 
   - name: ubuntu-16.04
-    driver_config:
-      network:
-      - ["private_network", {ip: 192.168.150.6}]
-      customize:
-        cpus: 4
-        memory: 4096
+    run_list: apt::default
+
 suites:
   - name: default
     run_list:
       - recipe[test::default] # invokes test cookbook (`test/cookbooks/test`)
     attributes:
+      mysql:
+        server_root_password: 'rootpass'
+        server_debian_password: 'debpass'
+        server_repl_password: 'replpass'
+      nodejs:
+        version: '6.9.4'
+        install_method: 'binary'
+        binary:
+          checksum: 'd28c331e1af88468e8220477e9b4d48d4ce041855b9c939ea2320de2929e7ce1'
+    verifier:
+      inspec_tests:
+        - path: test/integration/ghost
+      attrs:
+        - test/attributes/test.yml
