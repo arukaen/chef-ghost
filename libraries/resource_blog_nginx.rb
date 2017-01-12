@@ -31,6 +31,7 @@ class Chef
         %w{nxensite nxdissite}.each do |nxscript|
           template "#{nginx_attrs['script_dir']}/#{nxscript}" do
             source "#{nxscript}.erb"
+            cookbook 'ghost-blog'
             mode '0755'
             owner 'root'
             group 'root'
@@ -54,6 +55,7 @@ class Chef
         # Create the server definition
         template "/etc/nginx/sites-available/#{blog_name}.conf" do
           source 'ghost.conf.erb'
+          cookbook 'ghost-blog'
           blog_domain blog_domain
           blog_name blog_name
           proxy_port proxy_port

@@ -54,6 +54,7 @@ class Chef
 
         template "/etc/init.d/ghost_#{sanitized_name}" do
           source 'ghost.init.erb'
+          cookbook 'ghost-blog'
           owner 'root'
           group 'root'
           mode '0755'
@@ -68,6 +69,7 @@ class Chef
 
         template "#{install_dir}/config.js" do
           source 'config.js.erb'
+          cookbook 'ghost-blog'
           owner 'root'
           group 'root'
           variables(
