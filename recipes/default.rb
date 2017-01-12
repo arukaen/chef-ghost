@@ -26,3 +26,9 @@
  #   port 2388
  #   node_bin_path '/usr/local/bin/node'
  # end
+
+ # ghost_nginx 'test2' do
+ #   blog_name 'test2'
+ #   blog_domain 'myblog.com'
+ #   proxy_port 2388
+ # end
