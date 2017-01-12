@@ -16,6 +16,9 @@ class Chef
         nginx_attrs['ssl_certificate'] ||= "#{nginx_attrs['dir']}/ssl/#{blog_name}.crt"
         nginx_attrs['ssl_certificate_key'] ||= "#{nginx_attrs['dir']}/ssl/#{blog_name}.key"
         nginx_attrs['self_signed_ssl_certificate_subj'] ||= "/C=US/ST=Washington/L=Seattle/O=John Doe/OU=John Doe Industries/CN=*.#{blog_domain}/CN=#{blog_domain}"
+        nginx_attrs['blog_name'] ||= blog_name
+        nginx_attrs['blog_domain'] ||= blog_domain
+        nginx_attrs['port'] ||= proxy_port
 
         # Bring in the latest stable nginx from apt (will not upgrade, though)
         apt_repository 'nginx' do
@@ -54,9 +57,6 @@ class Chef
         template "/etc/nginx/sites-available/#{blog_name}.conf" do
           source 'ghost.conf.erb'
           cookbook 'ghost-blog'
-          blog_domain blog_domain
-          blog_name blog_name
-          proxy_port proxy_port
           variables nginx_attrs
           owner 'root'
           group 'root'
