@@ -94,7 +94,7 @@ class Chef
 
         service "ghost_#{sanitized_name}" do
            supports :status => true, :restart => true, :reload => true, :start => true, :stop => true
-           action   :nothing
+           action   :enable
         end
 
       end

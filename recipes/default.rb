@@ -9,7 +9,6 @@
 
  include_recipe 'nodejs'
  package 'unzip'
- include_recipe 'ghost-blog::_services'
 
  # Example: this is how you'd install 2 Ghost blogs on the same host
 
