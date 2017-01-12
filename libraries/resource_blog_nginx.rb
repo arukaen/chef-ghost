@@ -11,8 +11,6 @@ class Chef
       property :blog_domain, String, required: true
       property :proxy_port, Integer, required: true
 
-      default_action :create
-
       action :create do
         nginx_attrs = node['ghost-blog']['nginx'].to_h
         nginx_attrs['ssl_certificate'] ||= "#{nginx_attrs['dir']}/ssl/#{blog_name}.crt"
@@ -73,12 +71,6 @@ class Chef
              nxensite #{blog_name}.conf
           EOH
         end
-
-
-      end
-
-      action :delete do
-
 
       end
 
