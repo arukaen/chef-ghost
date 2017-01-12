@@ -32,5 +32,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[ghost-blog::default]
+      - recipe[test::default] # invokes test cookbook (`test/cookbooks/test`)
     attributes:
