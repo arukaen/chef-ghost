@@ -11,7 +11,7 @@ end
 execute 'unzip' do
     user 'root'
     command "unzip #{Chef::Config[:file_cache_path]}/ghost.zip -d #{node['ghost-blog']['install_dir']}"
-    not_if { ::File.directory?(node['ghost-blog']['install_dir']) }
+    not_if { ::File.exists?("#{install_dir}/index.js") }
 end
 
 nodejs_npm 'packages.json' do
