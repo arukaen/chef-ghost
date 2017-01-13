@@ -21,6 +21,7 @@ default['nodejs']['repo'] = 'https://deb.nodesource.com/node_6.x'
 # Ghost server settings
 default['ghost-blog']['install_dir'] = '/var/www/html/ghost'
 default['ghost-blog']['version'] = 'latest'
+default['ghost-blog']['node_bin_path'] = '/usr/bin/node'
 
 # Ghost Nginx settings
 default['ghost-blog']['nginx']['dir'] = '/etc/nginx'
@@ -44,7 +45,8 @@ default['ghost-blog']['nginx']['ssl'] = true
 # default['ghost-blog']['app']['self_signed_ssl_certificate_subj'] = ...
 
 # Ghost app settings
-default['ghost-blog']['app']['server_url'] = 'localhost'
+default['ghost-blog']['app']['server_url'] = 'http://localhost:2368'
+default['ghost-blog']['app']['listen_address'] = '127.0.0.1'
 default['ghost-blog']['app']['port'] = '2368'
 default['ghost-blog']['app']['mail_transport_method'] = 'SMTP'
 default['ghost-blog']['app']['mail_service'] = nil

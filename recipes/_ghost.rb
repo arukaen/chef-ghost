@@ -4,10 +4,14 @@ remote_file "#{Chef::Config[:file_cache_path]}/ghost.zip" do
     not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/ghost.zip") }
 end
 
+directory node['ghost-blog']['install_dir'] do
+  recursive true
+end
+
 execute 'unzip' do
     user 'root'
     command "unzip #{Chef::Config[:file_cache_path]}/ghost.zip -d #{node['ghost-blog']['install_dir']}"
-    not_if { ::File.directory?(node['ghost-blog']['install_dir']) }
+    not_if { ::File.exists?("#{install_dir}/index.js") }
 end
 
 nodejs_npm 'packages.json' do
@@ -35,6 +39,7 @@ template "#{node['ghost-blog']['install_dir']}/config.js" do
     variables(
         :url => node['ghost-blog']['app']['server_url'],
         :port => node['ghost-blog']['app']['port'],
+        :listen_address => node['ghost-blog']['app']['listen_address'],
         :transport => node['ghost-blog']['app']['mail_transport_method'],
         :service => node['ghost-blog']['app']['mail_service'],
         :user => node['ghost-blog']['app']['mail_user'],

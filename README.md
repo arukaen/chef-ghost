@@ -57,8 +57,7 @@ Nginx settings
 Ghost app settings
 ----------------
 
-* `node['ghost-blog']['app']['server_url']` - Ghost app server url. Default is `localhost`
-* `node['ghost-blog']['app']['port']` - Ghost app port. Default is `2368`
+* `node['ghost-blog']['app']['server_url']` - The full server URL to the Ghost app, including the port, and any custom path (e.g. `/blog`). Default is `http://localhost:2368`
 * `node['ghost-blog']['app']['mail_transport_method']` - Ghost app mailing method. Default is `SMTP`.
 * `node['ghost-blog']['app']['mail_service']` - Name of Mail service to use with nodemailer. Default is `nil`. Supports `Gmail`,`SES`, & `mailgun`.
 * `node['ghost-blog']['app']['mail_user']` - Username for select mail service. Default is `nil`
