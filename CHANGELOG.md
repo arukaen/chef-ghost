@@ -1,6 +1,10 @@
 ghostblog CHANGELOG
 ===================
 
+v1.0.8
+------
+- Changed `server_url` so that it supports the full URL scheme
+
 v1.0.7
 ------
 - Update repo url for node6.x versions.
