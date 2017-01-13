@@ -1,9 +1,9 @@
 ghostblog CHANGELOG
 ===================
 
-v1.0.8
+v1.1.0
 ------
-- Changed `server_url` so that it supports the full URL scheme
+- Changed `server_url` so that it supports the full URL scheme. This is a *breaking* change.
 
 v1.0.7
 ------
