@@ -102,7 +102,7 @@ class Chef
       action :delete do
 
         service "ghost_#{sanitized_name}" do
-          action   :delete
+          action [:stop, :disable]
         end
 
         template "#{node['ghost-blog']['install_dir']}/config.js" do
