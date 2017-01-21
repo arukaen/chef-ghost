@@ -29,7 +29,7 @@ class Chef
         package 'nginx'
 
         # Utilities to enable and disable nginx sites
-        %w{nxensite nxdissite}.each do |nxscript|
+        %w(nxensite nxdissite).each do |nxscript|
           template "#{nginx_attrs['script_dir']}/#{nxscript}" do
             source "#{nxscript}.erb"
             cookbook 'ghost-blog'
@@ -42,12 +42,12 @@ class Chef
         # Self-signed certificate (if needed)
         execute "generate self-signed cert #{nginx_attrs['self_signed']}" do
           command "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout #{nginx_attrs['ssl_certificate_key'].to_s.shellescape} -out #{nginx_attrs['ssl_certificate'].to_s.shellescape} -subj #{nginx_attrs['self_signed_ssl_certificate_subj'].to_s.shellescape}"
-          # TODO regen or extend if expired
+          # TODO: regen or extend if expired
           only_if do
             # We don't overwrite keys and certificates. Not our jam, yo.
             if nginx_attrs['ssl'] &&
-              !::File.exist?(nginx_attrs['ssl_certificate']) &&
-              !::File.exist?(nginx_attrs['ssl_certificate_key'])
+               !::File.exist?(nginx_attrs['ssl_certificate']) &&
+               !::File.exist?(nginx_attrs['ssl_certificate_key'])
             end
           end
           notifies :restart, 'service[nginx]'
@@ -71,7 +71,6 @@ class Chef
              nxensite #{blog_name}.conf
           EOH
         end
-
       end
 
       @action_class.class_eval do

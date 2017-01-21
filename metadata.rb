@@ -9,7 +9,7 @@ issues_url 'https://github.com/arukaen/chef-ghost/issues'
 source_url 'https://github.com/arukaen/chef-ghost'
 
 %w( ubuntu ).each do |os|
-    supports os
+  supports os
 end
 
 depends 'nodejs', '~> 2.4.0'

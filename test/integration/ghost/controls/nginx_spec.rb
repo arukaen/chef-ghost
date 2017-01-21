@@ -22,5 +22,4 @@ control 'Ghost Blog Nginx Config' do
   describe port(80) do
     it { should be_listening }
   end
-
 end

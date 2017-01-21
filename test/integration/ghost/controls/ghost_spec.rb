@@ -29,5 +29,4 @@ control 'Ghost Blog' do
   describe port(2378) do
     it { should be_listening }
   end
-
 end

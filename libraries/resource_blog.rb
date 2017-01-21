@@ -4,7 +4,7 @@ class Chef
       resource_name :ghost_blog
 
       default_action :create
-      
+
       property :install_dir, String, required: true
       property :blog_url, String, required: true
       property :port, Integer, required: true
@@ -26,7 +26,7 @@ class Chef
       default_action :create
 
       action :create do
-        # TODO upgrade to latest ghost when there is a new one!
+        # TODO: upgrade to latest ghost when there is a new one!
         remote_file "#{Chef::Config[:file_cache_path]}/ghost.zip" do
           source "https://ghost.org/zip/ghost-#{node['ghost-blog']['version']}.zip"
           not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/ghost.zip") }
@@ -39,7 +39,7 @@ class Chef
         execute 'unzip' do
           user 'root'
           command "unzip #{Chef::Config[:file_cache_path]}/ghost.zip -d #{install_dir}"
-          not_if { ::File.exists?("#{install_dir}/index.js") }
+          not_if { ::File.exist?("#{install_dir}/index.js") }
         end
 
         nodejs_npm 'packages.json' do
@@ -47,9 +47,9 @@ class Chef
           json true
           path install_dir
           options ['--production']
-        # TODO nodejs_npm seems like it's not really test-and-set. Fix that so we can
-        # auto-restart ghost when the installation changes.
-        #    notifies :restart, 'service[ghost]'
+          # TODO: nodejs_npm seems like it's not really test-and-set. Fix that so we can
+          # auto-restart ghost when the installation changes.
+          #    notifies :restart, 'service[ghost]'
         end
 
         template "/etc/init.d/ghost_#{sanitized_name}" do
@@ -59,9 +59,9 @@ class Chef
           group 'root'
           mode '0755'
           variables(
-            :name => sanitized_name,
-            :install_dir => install_dir,
-            :node_bin_path => node_bin_path
+            name: sanitized_name,
+            install_dir: install_dir,
+            node_bin_path: node_bin_path
           )
 
           notifies :restart, "service[ghost_#{sanitized_name}]"
@@ -73,34 +73,32 @@ class Chef
           owner 'root'
           group 'root'
           variables(
-            :url => blog_url,
-            :port => port,
-            :listen_address => listen_address,
-            :transport => email_transport,
-            :service => email_service,
-            :user => email_user,
-            :passwd => email_passwd,
-            :aws_access => aws_access_key,
-            :aws_secret => aws_secret_key,
-            :db_type => db_type,
-            :db_host => mysql_host,
-            :db_user => mysql_user,
-            :db_passwd => mysql_passwd,
-            :db_name => mysql_name,
-            :charset => mysql_charset
+            url: blog_url,
+            port: port,
+            listen_address: listen_address,
+            transport: email_transport,
+            service: email_service,
+            user: email_user,
+            passwd: email_passwd,
+            aws_access: aws_access_key,
+            aws_secret: aws_secret_key,
+            db_type: db_type,
+            db_host: mysql_host,
+            db_user: mysql_user,
+            db_passwd: mysql_passwd,
+            db_name: mysql_name,
+            charset: mysql_charset
           )
           notifies :restart, "service[ghost_#{sanitized_name}]"
         end
 
         service "ghost_#{sanitized_name}" do
-           supports :status => true, :restart => true, :reload => true, :start => true, :stop => true
-           action   :enable
+          supports status: true, restart: true, reload: true, start: true, stop: true
+          action :enable
         end
-
       end
 
       action :delete do
-
         service "ghost_#{sanitized_name}" do
           action [:stop, :disable]
         end
