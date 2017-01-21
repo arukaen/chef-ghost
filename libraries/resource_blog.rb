@@ -1,5 +1,6 @@
 class Chef
   class Resource
+    # This class handles the installation and basic configuration of a Ghost Blogging instance.
     class GhostBlogSite < ChefCompat::Resource
       resource_name :ghost_blog
 
@@ -22,8 +23,6 @@ class Chef
       property :mysql_passwd, String, required: false
       property :mysql_name, String, required: false
       property :mysql_charset, String, required: false
-
-      default_action :create
 
       action :create do
         # TODO: upgrade to latest ghost when there is a new one!

@@ -2,6 +2,7 @@ require 'shellwords'
 
 class Chef
   class Resource
+    # This class implements the new custom resource used for managing the nginx configuration as a reverse proxy.
     class GhostBlogNginxConfig < ChefCompat::Resource
       resource_name :ghost_nginx
 
@@ -15,7 +16,9 @@ class Chef
         nginx_attrs = node['ghost-blog']['nginx'].to_h
         nginx_attrs['ssl_certificate'] ||= "#{nginx_attrs['dir']}/ssl/#{blog_name}.crt"
         nginx_attrs['ssl_certificate_key'] ||= "#{nginx_attrs['dir']}/ssl/#{blog_name}.key"
-        nginx_attrs['self_signed_ssl_certificate_subj'] ||= "/C=US/ST=Washington/L=Seattle/O=John Doe/OU=John Doe Industries/CN=*.#{blog_domain}/CN=#{blog_domain}"
+        nginx_attrs['self_signed_ssl_certificate_subj'] ||=
+          '/C=US/ST=Washington/L=Seattle/O=John Doe/'\
+          "OU=John Doe Industries/CN=*.#{blog_domain}/CN=#{blog_domain}"
         nginx_attrs['blog_name'] ||= blog_name
         nginx_attrs['blog_domain'] ||= blog_domain
         nginx_attrs['port'] ||= proxy_port
@@ -41,7 +44,10 @@ class Chef
 
         # Self-signed certificate (if needed)
         execute "generate self-signed cert #{nginx_attrs['self_signed']}" do
-          command "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout #{nginx_attrs['ssl_certificate_key'].to_s.shellescape} -out #{nginx_attrs['ssl_certificate'].to_s.shellescape} -subj #{nginx_attrs['self_signed_ssl_certificate_subj'].to_s.shellescape}"
+          command "openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout #{nginx_attrs['ssl_certificate_key'].to_s.shellescape} \
+            -out #{nginx_attrs['ssl_certificate'].to_s.shellescape}
+            --subj #{nginx_attrs['self_signed_ssl_certificate_subj'].to_s.shellescape}"
           # TODO: regen or extend if expired
           only_if do
             # We don't overwrite keys and certificates. Not our jam, yo.
