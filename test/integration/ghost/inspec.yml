@@ -1,0 +1,6 @@
+name: ghost-inspec-profile
+title: IT tests for Ghost.
+summary: All the necessary inspec tests to confirm the ghost blogs have been deployed correctly.
+version: 1.0.0
+supports:
+  - os-family: debian

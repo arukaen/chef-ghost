@@ -1,7 +1,7 @@
 server {
-    server_name <%= @server_name %>;
-    access_log /var/log/nginx/<%= @server_name %>.log;
-    error_log /var/log/nginx/<%= @server_name %>_errors.log;
+    server_name <%= @blog_domain%>;
+    access_log /var/log/nginx/<%= @blog_name %>.log;
+    error_log /var/log/nginx/<%= @blog_name %>_errors.log;
 <% if !@ssl || @ssl == :both %>
     # If ssl is false or :both, ghost responds to http (no redirect)
     listen 80;
@@ -17,7 +17,7 @@ server {
         proxy_set_header HOST $http_host;
         proxy_set_header X-NginX-Proxy true;
 
-        proxy_pass http://127.0.0.1:2368;
+        proxy_pass http://127.0.0.1:<%= @port %>;
         proxy_redirect off;
         proxy_buffering off;
     }
@@ -27,7 +27,7 @@ server {
 # if ssl is `true`, we redirect http to https
 server {
     listen 80;
-    server_name <%= @server_name %>;
+    server_name <%= @blog_domain %>;
     return 301 https://$server_name$request_uri;
 }
 <% end %>

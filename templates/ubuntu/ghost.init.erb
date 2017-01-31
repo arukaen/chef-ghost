@@ -14,11 +14,11 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Ghost"
-NAME=ghost
-GHOST_ROOT=<%= node['ghost-blog']['install_dir'] %>
+NAME=ghost_<%= @name %>
+GHOST_ROOT=<%= @install_dir %>
 GHOST_GROUP=root
 GHOST_USER=root
-DAEMON=<%= node['ghost-blog']['node_bin_path'] %>
+DAEMON=<%= @node_bin_path %>
 DAEMON_ARGS="$GHOST_ROOT/index.js"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
@@ -51,11 +51,11 @@ do_start()
     #   2 if daemon could not be started
     start-stop-daemon --start --quiet \
         --chuid $GHOST_USER:$GHOST_GROUP --chdir $GHOST_ROOT --background \
-        --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
+        --pidfile $PIDFILE --make-pidfile --startas $DAEMON --test > /dev/null \
         || return 1
     start-stop-daemon --start --quiet \
         --chuid $GHOST_USER:$GHOST_GROUP --chdir $GHOST_ROOT --background \
-        --make-pidfile --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS \
+        --make-pidfile --pidfile $PIDFILE --make-pidfile --startas $DAEMON -- $DAEMON_ARGS \
         || return 2
     # Add code here, if necessary, that waits for the process to be ready
     # to handle requests from services started subsequently which depend
@@ -73,7 +73,7 @@ do_stop()
     #   2 if daemon could not be stopped
     #   other if a failure occurred
     start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 \
-        --pidfile $PIDFILE --exec $DAEMON
+        --pidfile $PIDFILE
     RETVAL="$?"
     [ "$RETVAL" = 2 ] && return 2
     # Wait for children to finish too if this is a daemon that forks
@@ -83,7 +83,7 @@ do_stop()
     # needed by services started subsequently.  A last resort is to
     # sleep for some time.
     start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 \
-        --exec $DAEMON
+        --pidfile $PIDFILE
     [ "$?" = 2 ] && return 2
     # Many daemons don't delete their pidfiles when they exit.
     rm -f $PIDFILE
