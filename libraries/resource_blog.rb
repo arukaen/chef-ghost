@@ -71,6 +71,12 @@ class Chef
           group 'root'
         end
 
+        template "#{install_dir}/includes/index.js" do
+          source 'index.js.erb'
+          owner 'root'
+          group 'root'
+        end
+
         template "#{install_dir}/config.js" do
           source 'config.js.erb'
           cookbook 'ghost-blog'
