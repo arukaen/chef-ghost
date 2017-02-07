@@ -66,6 +66,11 @@ class Chef
           notifies :restart, "service[ghost_#{sanitized_name}]"
         end
 
+        directory "#{install_dir}/includes" do
+          owner 'root'
+          group 'root'
+        end
+
         template "#{install_dir}/config.js" do
           source 'config.js.erb'
           cookbook 'ghost-blog'
