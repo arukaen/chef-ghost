@@ -12,4 +12,4 @@ source_url 'https://github.com/arukaen/chef-ghost'
   supports os
 end
 
-depends 'nodejs', '~> 2.4.0'
+depends 'nodejs', '>= 2.4.0'
