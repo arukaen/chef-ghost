@@ -8,7 +8,7 @@ version          '2.0.0'
 issues_url 'https://github.com/arukaen/chef-ghost/issues'
 source_url 'https://github.com/arukaen/chef-ghost'
 
-%w( ubuntu ).each do |os|
+%w( ubuntu centos ).each do |os|
   supports os
 end
 

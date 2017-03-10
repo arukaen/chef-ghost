@@ -51,20 +51,45 @@ class Chef
           #    notifies :restart, 'service[ghost]'
         end
 
-        template "/etc/init.d/ghost_#{sanitized_name}" do
-          source 'ghost.init.erb'
-          cookbook 'ghost-blog'
-          owner 'root'
-          group 'root'
-          mode '0755'
-          variables(
-            name: sanitized_name,
-            install_dir: install_dir,
-            node_bin_path: node_bin_path
-          )
+        case node[:platform_family]
+        when "rhel"
+          link "/etc/systemd/system/multi-user.target.wants/ghost_#{sanitized_name}" do
+            to "/usr/lib/systemd/system/ghost_#{sanitized_name}.service"
+          end
+          
+          template "/usr/lib/systemd/system/ghost_#{sanitized_name}.service" do
+            source "ghost.service.erb"
+            cookbook 'ghost-blog'
+            owner 'root'
+            group 'root'
+            mode '0755'
+            variables(
+              name: sanitized_name,
+              install_dir: install_dir,
+              node_bin_path: node_bin_path
+            )
 
-          notifies :restart, "service[ghost_#{sanitized_name}]"
+            notifies :restart,"service[ghost_#{sanitized_name}]"
+          end
+
+
+        when "ubuntu"
+          template "/etc/init.d/ghost_#{sanitized_name}" do
+            source 'ghost.init.erb'
+            cookbook 'ghost-blog'
+            owner 'root'
+            group 'root'
+            mode '0755'
+            variables(
+              name: sanitized_name,
+              install_dir: install_dir,
+              node_bin_path: node_bin_path
+            )
+
+            notifies :restart, "service[ghost_#{sanitized_name}]"
+          end
         end
+
 
         directory "#{install_dir}/includes" do
           owner 'root'

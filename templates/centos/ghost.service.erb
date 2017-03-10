@@ -1,0 +1,15 @@
+[Unit]
+Description=ghost - a blogging service
+Documentation=https://help.ghost.org/hc/en-us/categories/203269047-Administrators
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/run/<%= @name %>.pid
+ExecStart=/usr/bin/npm start <%= @install_dir %>/index.js --production
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
