@@ -4,7 +4,8 @@ metadata
 
 group :integration do
   cookbook 'apt'
+  cookbook 'yum'
 end
 
-cookbook 'nodejs', '~> 2.4.0'
+cookbook 'nodejs', '~> 3.0.0'
 cookbook 'test', path: 'test/cookbooks/test'

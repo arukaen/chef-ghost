@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'nodejs'
+include_recipe 'nodejs::nodejs_from_package'
 package 'unzip'
 
 # Example: this is how you'd install 2 Ghost blogs on the same host

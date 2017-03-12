@@ -19,7 +19,7 @@ platforms:
     run_list: apt::default
 
   - name: centos-7.3
-    run_list: dnf::default
+    run_list: yum::default
 
 suites:
   - name: default

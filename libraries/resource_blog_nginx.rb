@@ -60,22 +60,33 @@ class Chef
         end
 
         # Create the server definition
-        template "/etc/nginx/sites-available/#{blog_name}.conf" do
-          source 'ghost.conf.erb'
-          cookbook 'ghost-blog'
-          variables nginx_attrs
-          owner 'root'
-          group 'root'
-        end
+        case node[:platform_family]
+        when "rhel"
+          template "/etc/nginx/conf.d/#{blog_name}.conf" do
+            source 'ghost.conf.erb'
+            cookbook 'ghost-blog'
+            variables nginx_attrs
+            owner 'root'
+            group 'root'
+          end
+        when "debian"
+          template "/etc/nginx/sites-available/#{blog_name}.conf" do
+            source 'ghost.conf.erb'
+            cookbook 'ghost-blog'
+            variables nginx_attrs
+            owner 'root'
+            group 'root'
+          end
 
-        # Enable the site
-        bash 'enable site config' do
-          user 'root'
-          cwd '/etc/nginx/sites-available/'
-          code <<-EOH
-             nxdissite default
-             nxensite #{blog_name}.conf
-          EOH
+          # Enable the site
+          bash 'enable site config' do
+            user 'root'
+            cwd '/etc/nginx/sites-available/'
+            code <<-EOH
+               nxdissite default
+               nxensite #{blog_name}.conf
+            EOH
+          end
         end
       end
 

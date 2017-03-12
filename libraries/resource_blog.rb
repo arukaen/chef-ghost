@@ -23,6 +23,7 @@ class Chef
       property :mysql_passwd, String, required: false
       property :mysql_name, String, required: false
       property :mysql_charset, String, required: false
+      property :node_env, String, required: true, default: 'production'
 
       action :create do
         # TODO: upgrade to latest ghost when there is a new one!
@@ -53,10 +54,15 @@ class Chef
 
         case node[:platform_family]
         when "rhel"
+
+          # rely on forever for daemonizing ghost
+          nodejs_npm 'forever'
+
+          # set up the links
           link "/etc/systemd/system/multi-user.target.wants/ghost_#{sanitized_name}" do
             to "/usr/lib/systemd/system/ghost_#{sanitized_name}.service"
           end
-          
+
           template "/usr/lib/systemd/system/ghost_#{sanitized_name}.service" do
             source "ghost.service.erb"
             cookbook 'ghost-blog'
@@ -66,14 +72,15 @@ class Chef
             variables(
               name: sanitized_name,
               install_dir: install_dir,
-              node_bin_path: node_bin_path
+              node_bin_path: node_bin_path,
+              node_env: node_env
             )
 
             notifies :restart,"service[ghost_#{sanitized_name}]"
           end
 
 
-        when "ubuntu"
+        when "debian"
           template "/etc/init.d/ghost_#{sanitized_name}" do
             source 'ghost.init.erb'
             cookbook 'ghost-blog'

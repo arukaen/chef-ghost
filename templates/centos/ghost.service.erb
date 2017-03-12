@@ -6,10 +6,11 @@ Wants=network-online.target
 
 [Service]
 Type=forking
-PIDFile=/run/<%= @name %>.pid
-ExecStart=/usr/bin/npm start <%= @install_dir %>/index.js --production
-ExecReload=/bin/kill -s HUP $MAINPID
-ExecStop=/bin/kill -s QUIT $MAINPID
+Environment=NODE_ENV=production
+WorkingDirectory=<%= @install_dir %>
+ExecStart=/usr/bin/forever start index.js
+ExecReload=/usr/bin/forever restart index.js
+ExecStop=/usr/bin/forever stop index.js
 
 [Install]
 WantedBy=multi-user.target
