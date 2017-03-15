@@ -15,7 +15,7 @@ Requirements
 
 ## Platforms
 
-* Ubuntu 12.04, 14.04
+* Ubuntu 14.04, 16.04
 
 ## Cookbooks:
 
