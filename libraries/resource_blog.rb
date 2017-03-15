@@ -45,7 +45,7 @@ class Chef
           user 'root'
           json true
           path install_dir
-          options ['--production']
+          options ['--production','--loglevel=error']
           # TODO: nodejs_npm seems like it's not really test-and-set. Fix that so we can
           # auto-restart ghost when the installation changes.
           #    notifies :restart, 'service[ghost]'
