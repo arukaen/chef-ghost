@@ -10,7 +10,7 @@ source_url 'https://github.com/arukaen/chef-ghost'
 
 #have to be more specific due to version constraints
 supports 'ubuntu', '>= 14.04'
-supports 'rhel', '>= 7'
-supports 'centos' '>= 7'
+supports 'rhel', '>= 7.0'
+supports 'centos', '>= 7.0'
 
 depends 'nodejs', '>= 2.4.0'
