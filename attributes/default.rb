@@ -50,6 +50,7 @@ default['ghost-blog']['app']['mail_transport_method'] = 'SMTP'
 default['ghost-blog']['app']['mail_service'] = nil
 default['ghost-blog']['app']['mail_user'] = nil
 default['ghost-blog']['app']['mail_passwd'] = nil
+default['ghost-blog']['app']['node_env'] = 'production'
 default['ghost-blog']['ses']['aws_secret_key'] = nil
 default['ghost-blog']['ses']['aws_access_key'] = nil
 

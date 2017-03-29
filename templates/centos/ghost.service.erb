@@ -1,0 +1,16 @@
+[Unit]
+Description=ghost - a blogging service
+Documentation=https://help.ghost.org/hc/en-us/categories/203269047-Administrators
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+Environment=NODE_ENV=production
+WorkingDirectory=<%= @install_dir %>
+ExecStart=/usr/bin/forever start index.js
+ExecReload=/usr/bin/forever restart index.js
+ExecStop=/usr/bin/forever stop index.js
+
+[Install]
+WantedBy=multi-user.target
