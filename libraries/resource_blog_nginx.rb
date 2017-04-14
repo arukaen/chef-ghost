@@ -11,7 +11,10 @@ class Chef
       property :blog_name, String, required: true
       property :blog_domain, String, required: true
       property :proxy_port, Integer, required: true
-      property :ssl
+      property :ssl, [true, false]
+      property :redir_behind_lb, [true, false], required: true, default: false
+
+
 
       action :create do
         nginx_attrs = node['ghost-blog']['nginx'].to_h
@@ -27,10 +30,7 @@ class Chef
         # a little different because the above aren't defined by default
         # override if we're setting in the resource block
         nginx_attrs['ssl'] = ssl if defined? ssl
-
-        print "---- NGINX ATTRS ----"
-        print nginx_attrs.to_s
-        print "---------------------"
+        nginx_attrs['redir_behind_lb'] = redir_behind_lb
 
         # Bring in the latest stable nginx from apt (will not upgrade, though)
         apt_repository 'nginx' do
