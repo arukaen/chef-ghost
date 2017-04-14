@@ -8,6 +8,7 @@ version          '2.1.2'
 issues_url 'https://github.com/arukaen/chef-ghost/issues'
 source_url 'https://github.com/arukaen/chef-ghost'
 
+
 #have to be more specific due to version constraints
 supports 'ubuntu', '>= 14.04'
 supports 'rhel', '>= 7.0'
